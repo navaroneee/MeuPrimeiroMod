@@ -30,3 +30,5 @@ jdk17/
 
 # Files from Forge MDK
 forge*changelog.txt
+ROTEIRO*.txt
+CHANGELOG*.md

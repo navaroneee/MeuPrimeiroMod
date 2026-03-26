@@ -1,5 +1,6 @@
 package com.navaronee.meuprimeiromod.block;
 
+
 import com.navaronee.meuprimeiromod.MeuPrimeiroMod;
 import com.navaronee.meuprimeiromod.item.ModItems;
 import net.minecraft.world.item.BlockItem;
@@ -25,6 +26,12 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.WOOD)
                     .noOcclusion()));
+
+    public static final RegistryObject<Block> LEAD_ORE = registerBlock("lead_ore",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(3f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
