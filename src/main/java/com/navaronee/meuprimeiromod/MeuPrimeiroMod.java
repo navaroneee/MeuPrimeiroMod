@@ -1,5 +1,6 @@
 package com.navaronee.meuprimeiromod;
 
+
 import com.mojang.logging.LogUtils;
 import com.navaronee.meuprimeiromod.block.ModBlocks;
 import com.navaronee.meuprimeiromod.item.ModItems;
@@ -12,11 +13,10 @@ import org.slf4j.Logger;
 
 @Mod(MeuPrimeiroMod.MODID)
 public class MeuPrimeiroMod {
-
     public static final String MODID = "meuprimeiromod";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public MeuPrimeiroMod() {
+    public MeuPrimeiroMod(){
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModBlocks.register(modEventBus);
@@ -24,11 +24,9 @@ public class MeuPrimeiroMod {
         ModCreativeTabs.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
-
         MinecraftForge.EVENT_BUS.register(this);
     }
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        LOGGER.info("Meu Primeiro Mod carregado com sucesso!");
+    private void commonSetup(final FMLCommonSetupEvent event){
+        LOGGER.info("Meu Primeiro Mod carregado com sucesso");
     }
 }

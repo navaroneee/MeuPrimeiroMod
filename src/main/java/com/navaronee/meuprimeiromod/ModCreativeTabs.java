@@ -20,6 +20,7 @@ public class ModCreativeTabs {
                     .title(Component.translatable("itemGroup.meuprimeiromod"))
                     .displayItems((parameters, output) -> {
                         output.accept(ModBlocks.WOOD_CHAIR.get());
+                        output.accept(ModBlocks.LEAD_ORE.get());
                     })
                     .build());
 
