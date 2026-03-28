@@ -21,9 +21,8 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, MeuPrimeiroMod.MODID);
 
     public static final RegistryObject<Block> WOOD_CHAIR = registerBlock("wood_chair",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new HorizontalFacingBlock(BlockBehaviour.Properties.of()
                     .strength(2f)
-                    .requiresCorrectToolForDrops()
                     .sound(SoundType.WOOD)
                     .noOcclusion()));
 

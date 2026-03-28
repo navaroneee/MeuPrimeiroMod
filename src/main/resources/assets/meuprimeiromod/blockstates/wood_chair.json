@@ -1,7 +1,19 @@
 {
 	"variants": {
-		"": {
+		"facing=north": {
 			"model": "meuprimeiromod:block/wood_chair"
+		},
+		"facing=south": {
+			"model": "meuprimeiromod:block/wood_chair",
+			"y": 180
+		},
+		"facing=east": {
+			"model": "meuprimeiromod:block/wood_chair",
+			"y": 90
+		},
+		"facing=west": {
+			"model": "meuprimeiromod:block/wood_chair",
+			"y": 270
 		}
 	}
 }

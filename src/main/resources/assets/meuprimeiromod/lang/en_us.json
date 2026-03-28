@@ -1,5 +1,7 @@
 {
 	"block.meuprimeiromod.wood_chair": "Wood Chair",
 	"block.meuprimeiromod.lead_ore": "Lead Ore",
+	"item.meuprimeiromod.raw_lead": "Raw Lead",
+	"item.meuprimeiromod.lead_ingot": "Lead Ingot",
 	"itemGroup.meuprimeiromod": "Meu Primeiro Mod"
 }

@@ -1,6 +1,7 @@
 package com.navaronee.meuprimeiromod;
 
 import com.navaronee.meuprimeiromod.block.ModBlocks;
+import com.navaronee.meuprimeiromod.item.ModItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -21,6 +22,8 @@ public class ModCreativeTabs {
                     .displayItems((parameters, output) -> {
                         output.accept(ModBlocks.WOOD_CHAIR.get());
                         output.accept(ModBlocks.LEAD_ORE.get());
+                        output.accept(ModItems.RAW_LEAD.get());
+                        output.accept(ModItems.LEAD_INGOT.get());
                     })
                     .build());
 

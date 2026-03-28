@@ -1,5 +1,7 @@
 {
 	"block.meuprimeiromod.wood_chair": "Cadeira de Madeira",
 	"block.meuprimeiromod.lead_ore": "Minerio de Chumbo",
+	"item.meuprimeiromod.raw_lead": "Chumbo Bruto",
+	"item.meuprimeiromod.lead_ingot": "Barra de Chumbo",
 	"itemGroup.meuprimeiromod": "Meu Primeiro Mod"
 }
