@@ -3,5 +3,9 @@
 	"block.meuprimeiromod.lead_ore": "Lead Ore",
 	"item.meuprimeiromod.raw_lead": "Raw Lead",
 	"item.meuprimeiromod.lead_ingot": "Lead Ingot",
+	"item.meuprimeiromod.lead_helmet": "Lead Helmet",
+	"item.meuprimeiromod.lead_chestplate": "Lead Chestplate",
+	"item.meuprimeiromod.lead_leggings": "Lead Leggings",
+	"item.meuprimeiromod.lead_boots": "Lead Boots",
 	"itemGroup.meuprimeiromod": "Meu Primeiro Mod"
 }

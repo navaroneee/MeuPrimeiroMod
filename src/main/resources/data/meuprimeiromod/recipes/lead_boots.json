@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"L L",
+		"L L"
+	],
+	"key": {
+		"L": {
+			"item": "meuprimeiromod:lead_ingot"
+		}
+	},
+	"result": {
+		"item": "meuprimeiromod:lead_boots",
+		"count": 1
+	}
+}

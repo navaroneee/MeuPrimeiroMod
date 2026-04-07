@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"L L",
+		"LLL",
+		"LLL"
+	],
+	"key": {
+		"L": {
+			"item": "meuprimeiromod:lead_ingot"
+		}
+	},
+	"result": {
+		"item": "meuprimeiromod:lead_chestplate",
+		"count": 1
+	}
+}

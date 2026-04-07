@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"LLL",
+		"L L"
+	],
+	"key": {
+		"L": {
+			"item": "meuprimeiromod:lead_ingot"
+		}
+	},
+	"result": {
+		"item": "meuprimeiromod:lead_helmet",
+		"count": 1
+	}
+}

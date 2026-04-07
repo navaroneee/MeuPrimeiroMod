@@ -3,5 +3,9 @@
 	"block.meuprimeiromod.lead_ore": "Minerio de Chumbo",
 	"item.meuprimeiromod.raw_lead": "Chumbo Bruto",
 	"item.meuprimeiromod.lead_ingot": "Barra de Chumbo",
+	"item.meuprimeiromod.lead_helmet": "Capacete de Chumbo",
+	"item.meuprimeiromod.lead_chestplate": "Peitoral de Chumbo",
+	"item.meuprimeiromod.lead_leggings": "Calca de Chumbo",
+	"item.meuprimeiromod.lead_boots": "Botas de Chumbo",
 	"itemGroup.meuprimeiromod": "Meu Primeiro Mod"
 }

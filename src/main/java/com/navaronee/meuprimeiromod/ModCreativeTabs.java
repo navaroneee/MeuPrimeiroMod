@@ -24,6 +24,10 @@ public class ModCreativeTabs {
                         output.accept(ModBlocks.LEAD_ORE.get());
                         output.accept(ModItems.RAW_LEAD.get());
                         output.accept(ModItems.LEAD_INGOT.get());
+                        output.accept(ModItems.LEAD_HELMET.get());
+                        output.accept(ModItems.LEAD_CHESTPLATE.get());
+                        output.accept(ModItems.LEAD_LEGGINGS.get());
+                        output.accept(ModItems.LEAD_BOOTS.get());
                     })
                     .build());
 
