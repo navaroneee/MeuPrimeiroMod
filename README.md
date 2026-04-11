@@ -13,6 +13,7 @@ Cada **episódio (EP)** corresponde a uma funcionalidade específica do mod. A i
 | 01 | Meu Primeiro Mod: cadeira de madeira + creative tab | Concluído |
 | 02 | Propriedades de Blocks + Sistema de Minério | Concluído |
 | 03 | Armadura de Chumbo (Lead Armor) | Concluído |
+| 04 | Cesium 137: Radiação, Geiger Counter e Armadura Custom | Concluído |
 
 ## Fluxo de Trabalho
 
