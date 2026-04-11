@@ -1,0 +1,20 @@
+{
+	"counter_lv1": {
+		"subtitle": "Geiger Counter (Low)",
+		"sounds": [
+			"meuprimeiromod:counter_lv1"
+		]
+	},
+	"counter_lv2": {
+		"subtitle": "Geiger Counter (Medium)",
+		"sounds": [
+			"meuprimeiromod:counter_lv2"
+		]
+	},
+	"counter_lv3": {
+		"subtitle": "Geiger Counter (High)",
+		"sounds": [
+			"meuprimeiromod:counter_lv3"
+		]
+	}
+}

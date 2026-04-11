@@ -7,5 +7,9 @@
 	"item.meuprimeiromod.lead_chestplate": "Peitoral de Chumbo",
 	"item.meuprimeiromod.lead_leggings": "Calca de Chumbo",
 	"item.meuprimeiromod.lead_boots": "Botas de Chumbo",
+	"block.meuprimeiromod.cesium_ore": "Minerio de Cesio 137",
+	"item.meuprimeiromod.cesium_dust": "Po de Cesio 137",
+	"item.meuprimeiromod.gaiser_counter": "Contador Geiger",
+	"effect.meuprimeiromod.radiation": "Radiacao",
 	"itemGroup.meuprimeiromod": "Meu Primeiro Mod"
 }

@@ -1,6 +1,7 @@
 {
 	"replace": false,
 	"values": [
-		"meuprimeiromod:lead_ore"
+		"meuprimeiromod:lead_ore",
+		"meuprimeiromod:cesium_ore"
 	]
 }

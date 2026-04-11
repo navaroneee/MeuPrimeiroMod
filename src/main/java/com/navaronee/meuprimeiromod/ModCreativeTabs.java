@@ -28,6 +28,9 @@ public class ModCreativeTabs {
                         output.accept(ModItems.LEAD_CHESTPLATE.get());
                         output.accept(ModItems.LEAD_LEGGINGS.get());
                         output.accept(ModItems.LEAD_BOOTS.get());
+                        output.accept(ModBlocks.CESIUM_ORE.get());
+                        output.accept(ModItems.CESIUM_DUST.get());
+                        output.accept(ModItems.GAISER_COUNTER.get());
                     })
                     .build());
 

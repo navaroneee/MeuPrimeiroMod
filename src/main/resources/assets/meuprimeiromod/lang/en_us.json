@@ -7,5 +7,9 @@
 	"item.meuprimeiromod.lead_chestplate": "Lead Chestplate",
 	"item.meuprimeiromod.lead_leggings": "Lead Leggings",
 	"item.meuprimeiromod.lead_boots": "Lead Boots",
+	"block.meuprimeiromod.cesium_ore": "Cesium 137 Ore",
+	"item.meuprimeiromod.cesium_dust": "Cesium 137 Dust",
+	"item.meuprimeiromod.gaiser_counter": "Geiger Counter",
+	"effect.meuprimeiromod.radiation": "Radiation",
 	"itemGroup.meuprimeiromod": "Meu Primeiro Mod"
 }

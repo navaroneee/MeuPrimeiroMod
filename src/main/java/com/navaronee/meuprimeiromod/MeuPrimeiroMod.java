@@ -3,7 +3,9 @@ package com.navaronee.meuprimeiromod;
 
 import com.mojang.logging.LogUtils;
 import com.navaronee.meuprimeiromod.block.ModBlocks;
+import com.navaronee.meuprimeiromod.effect.ModEffects;
 import com.navaronee.meuprimeiromod.item.ModItems;
+import com.navaronee.meuprimeiromod.sound.ModSounds;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -22,6 +24,8 @@ public class MeuPrimeiroMod {
         ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
+        ModEffects.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);

@@ -19,17 +19,28 @@ public class ModItems {
     public static final RegistryObject<Item> LEAD_INGOT = ITEMS.register("lead_ingot",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> CESIUM_DUST = ITEMS.register("cesium_dust",
+            () -> new Item(new Item.Properties()) {
+                @Override
+                public boolean isFoil(net.minecraft.world.item.ItemStack stack) {
+                    return true;
+                }
+            });
+
+    public static final RegistryObject<Item> GAISER_COUNTER = ITEMS.register("gaiser_counter",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+
     public static final RegistryObject<Item> LEAD_HELMET = ITEMS.register("lead_helmet",
-            () -> new ArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.HELMET, new Item.Properties()));
 
     public static final RegistryObject<Item> LEAD_CHESTPLATE = ITEMS.register("lead_chestplate",
-            () -> new ArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 
     public static final RegistryObject<Item> LEAD_LEGGINGS = ITEMS.register("lead_leggings",
-            () -> new ArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
     public static final RegistryObject<Item> LEAD_BOOTS = ITEMS.register("lead_boots",
-            () -> new ArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.BOOTS, new Item.Properties()));
+            () -> new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.BOOTS, new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
