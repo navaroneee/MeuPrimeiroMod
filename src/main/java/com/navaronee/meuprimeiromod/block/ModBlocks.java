@@ -39,6 +39,16 @@ public class ModBlocks {
                     .sound(SoundType.STONE)
                     .lightLevel(state -> 7)));
 
+    public static final RegistryObject<Block> CESIUM_REFINER = registerBlock("cesium_refiner",
+            () -> new CesiumRefinerBlock(BlockBehaviour.Properties.of()
+                    .strength(4f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
+
+    public static final RegistryObject<Block> CESIUM_NUKE = registerBlock("cesium_nuke",
+            () -> new CesiumNukeBlock(BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.TNT)));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);

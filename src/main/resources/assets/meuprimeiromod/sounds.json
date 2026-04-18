@@ -16,5 +16,11 @@
 		"sounds": [
 			"meuprimeiromod:counter_lv3"
 		]
+	},
+	"explosion_siren": {
+		"subtitle": "Cesium Nuke Siren",
+		"sounds": [
+			"meuprimeiromod:explosion_siren"
+		]
 	}
 }

@@ -1,0 +1,6 @@
+{
+	"variants": {
+		"unstable=false": { "model": "meuprimeiromod:block/cesium_nuke" },
+		"unstable=true": { "model": "meuprimeiromod:block/cesium_nuke" }
+	}
+}

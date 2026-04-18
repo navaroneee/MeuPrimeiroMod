@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"facing=north": { "model": "meuprimeiromod:block/cesium_refiner" },
+		"facing=south": { "model": "meuprimeiromod:block/cesium_refiner", "y": 180 },
+		"facing=east":  { "model": "meuprimeiromod:block/cesium_refiner", "y": 90 },
+		"facing=west":  { "model": "meuprimeiromod:block/cesium_refiner", "y": 270 }
+	}
+}

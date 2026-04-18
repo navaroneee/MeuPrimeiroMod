@@ -1,91 +1,89 @@
 package com.navaronee.meuprimeiromod.event;
 
 import com.navaronee.meuprimeiromod.MeuPrimeiroMod;
-import com.navaronee.meuprimeiromod.block.ModBlocks;
 import com.navaronee.meuprimeiromod.effect.ModEffects;
 import com.navaronee.meuprimeiromod.item.ModItems;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = MeuPrimeiroMod.MODID)
 public class RadiationEvents {
 
-    private static boolean hasFullLeadArmor(Player player) {
-        return player.getItemBySlot(EquipmentSlot.HEAD).getItem() == ModItems.LEAD_HELMET.get()
-                && player.getItemBySlot(EquipmentSlot.CHEST).getItem() == ModItems.LEAD_CHESTPLATE.get()
-                && player.getItemBySlot(EquipmentSlot.LEGS).getItem() == ModItems.LEAD_LEGGINGS.get()
-                && player.getItemBySlot(EquipmentSlot.FEET).getItem() == ModItems.LEAD_BOOTS.get();
+    private static boolean hasFullLeadArmor(LivingEntity entity) {
+        return entity.getItemBySlot(EquipmentSlot.HEAD).getItem() == ModItems.LEAD_HELMET.get()
+                && entity.getItemBySlot(EquipmentSlot.CHEST).getItem() == ModItems.LEAD_CHESTPLATE.get()
+                && entity.getItemBySlot(EquipmentSlot.LEGS).getItem() == ModItems.LEAD_LEGGINGS.get()
+                && entity.getItemBySlot(EquipmentSlot.FEET).getItem() == ModItems.LEAD_BOOTS.get();
     }
 
-    private static boolean isHoldingCesium(Player player) {
-        return player.getMainHandItem().getItem() == ModItems.CESIUM_DUST.get()
-                || player.getOffhandItem().getItem() == ModItems.CESIUM_DUST.get();
-    }
-
-    private static double findNearestCesiumDistance(Player player, Level level) {
-        BlockPos playerPos = player.blockPosition();
-        double closestDist = Double.MAX_VALUE;
-        int range = 15;
-
-        for (BlockPos pos : BlockPos.betweenClosed(
-                playerPos.offset(-range, -range, -range),
-                playerPos.offset(range, range, range))) {
-            if (level.getBlockState(pos).is(ModBlocks.CESIUM_ORE.get())) {
-                double dist = Math.sqrt(pos.distSqr(playerPos));
-                if (dist < closestDist) {
-                    closestDist = dist;
-                }
-            }
-        }
-        return closestDist;
+    private static boolean isHoldingCesium(LivingEntity entity) {
+        return entity.getMainHandItem().getItem() == ModItems.CESIUM_DUST.get()
+                || entity.getOffhandItem().getItem() == ModItems.CESIUM_DUST.get();
     }
 
     @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
+    public static void onLivingTick(LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
 
-        Player player = event.player;
-        Level level = player.level();
-        if (level.isClientSide()) return;
+        // PERFORMANCE: throttle de 40 ticks (2s). Vale pra todos os mobs/players.
+        if (entity.tickCount % 40 != 0) return;
 
-        boolean fullLead = hasFullLeadArmor(player);
+        // PERFORMANCE: server-side only.
+        if (entity.level().isClientSide()) return;
 
-        // Full lead armor gives slowness
-        if (fullLead && player.tickCount % 40 == 0) {
-            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 0, false, false, true));
+        // Armadura de chumbo full: imune + slowness (aplica só em Player porque slowness em mob virou sem sentido)
+        if (hasFullLeadArmor(entity)) {
+            if (entity instanceof Player) {
+                entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 0, false, false, true));
+            }
+            return;
         }
 
-        // Radiation from holding cesium dust
-        if (isHoldingCesium(player) && !fullLead) {
-            if (player.tickCount % 40 == 0) {
-                player.addEffect(new MobEffectInstance(ModEffects.RADIATION.get(), 200, 0, false, true, true));
-                player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 200, 2, false, true, true));
-                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, true, true));
+        // Segurar cesium na mão (aplicável a players e mobs que carregam itens)
+        if (isHoldingCesium(entity)) {
+            entity.addEffect(new MobEffectInstance(ModEffects.RADIATION.get(), 200, 0, false, true, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 200, 2, false, true, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, true, true));
+        }
+
+        // PERFORMANCE: early return se não há cesium no mundo nem zonas de granada.
+        // Sem isso, todo mob tickaria checando listas vazias.
+        boolean hasOres = CesiumTracker.hasActiveOre();
+        boolean hasZones = RadiationZoneManager.hasActiveZones();
+        if (!hasOres && !hasZones) return;
+
+        // Proximidade a cesium_ore
+        if (hasOres) {
+            double dist = CesiumTracker.findNearestCesiumDistance(entity);
+            if (dist <= 5.0) {
+                entity.addEffect(new MobEffectInstance(ModEffects.RADIATION.get(), 200, 1, false, true, true));
+                entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 200, 3, false, true, true));
+                entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 2, false, true, true));
+            } else if (dist <= 10.0) {
+                entity.addEffect(new MobEffectInstance(ModEffects.RADIATION.get(), 200, 0, false, true, true));
+                entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 200, 1, false, true, true));
+                entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 0, false, true, true));
             }
         }
 
-        // Radiation from nearby cesium ore blocks
-        double dist = findNearestCesiumDistance(player, level);
-        if (dist <= 5.0 && !fullLead) {
-            if (player.tickCount % 40 == 0) {
-                player.addEffect(new MobEffectInstance(ModEffects.RADIATION.get(), 200, 1, false, true, true));
-                player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 200, 3, false, true, true));
-                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 2, false, true, true));
-            }
-        } else if (dist <= 10.0 && !fullLead) {
-            if (player.tickCount % 40 == 0) {
-                player.addEffect(new MobEffectInstance(ModEffects.RADIATION.get(), 200, 0, false, true, true));
-                player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 200, 1, false, true, true));
-                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 0, false, true, true));
+        // Zonas de radiação de granada (AOE temporário)
+        if (hasZones) {
+            int zoneLevel = RadiationZoneManager.getRadiationLevel(entity, entity.level().getGameTime());
+            if (zoneLevel == 2) {
+                entity.addEffect(new MobEffectInstance(ModEffects.RADIATION.get(), 200, 2, false, true, true));
+                entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 200, 4, false, true, true));
+                entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 3, false, true, true));
+            } else if (zoneLevel == 1) {
+                entity.addEffect(new MobEffectInstance(ModEffects.RADIATION.get(), 200, 1, false, true, true));
+                entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 200, 2, false, true, true));
+                entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, true, true));
             }
         }
-
     }
 }

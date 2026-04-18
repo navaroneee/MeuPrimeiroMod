@@ -33,7 +33,7 @@ public class GeigerSoundHandler {
             return;
         }
 
-        int level = GeigerCounterSoundInstance.getDistanceLevel(player);
+        int level = ClientCesiumTracker.getDistanceLevel(player);
 
         if (level == 0) {
             if (currentSound != null) {

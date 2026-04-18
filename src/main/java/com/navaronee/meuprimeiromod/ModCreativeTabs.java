@@ -31,6 +31,10 @@ public class ModCreativeTabs {
                         output.accept(ModBlocks.CESIUM_ORE.get());
                         output.accept(ModItems.CESIUM_DUST.get());
                         output.accept(ModItems.GAISER_COUNTER.get());
+                        output.accept(ModBlocks.CESIUM_REFINER.get());
+                        output.accept(ModItems.REFINED_CESIUM.get());
+                        output.accept(ModItems.CESIUM_GRANADE.get());
+                        output.accept(ModBlocks.CESIUM_NUKE.get());
                     })
                     .build());
 

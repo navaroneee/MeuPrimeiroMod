@@ -10,6 +10,12 @@
 	"block.meuprimeiromod.cesium_ore": "Cesium 137 Ore",
 	"item.meuprimeiromod.cesium_dust": "Cesium 137 Dust",
 	"item.meuprimeiromod.gaiser_counter": "Geiger Counter",
+	"block.meuprimeiromod.cesium_refiner": "Cesium Refiner",
+	"item.meuprimeiromod.refined_cesium": "Refined Cesium",
+	"item.meuprimeiromod.cesium_granade": "Cesium Grenade",
+	"entity.meuprimeiromod.cesium_granade": "Cesium Grenade",
+	"block.meuprimeiromod.cesium_nuke": "Cesium Nuke",
+	"entity.meuprimeiromod.cesium_nuke_primed": "Primed Cesium Nuke",
 	"effect.meuprimeiromod.radiation": "Radiation",
 	"itemGroup.meuprimeiromod": "Meu Primeiro Mod"
 }

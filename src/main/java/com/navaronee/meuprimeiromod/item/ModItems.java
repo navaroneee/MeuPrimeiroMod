@@ -30,6 +30,17 @@ public class ModItems {
     public static final RegistryObject<Item> GAISER_COUNTER = ITEMS.register("gaiser_counter",
             () -> new Item(new Item.Properties().stacksTo(1)));
 
+    public static final RegistryObject<Item> REFINED_CESIUM = ITEMS.register("refined_cesium",
+            () -> new Item(new Item.Properties()) {
+                @Override
+                public boolean isFoil(net.minecraft.world.item.ItemStack stack) {
+                    return true;
+                }
+            });
+
+    public static final RegistryObject<Item> CESIUM_GRANADE = ITEMS.register("cesium_granade",
+            () -> new CesiumGranadeItem(new Item.Properties().stacksTo(16)));
+
     public static final RegistryObject<Item> LEAD_HELMET = ITEMS.register("lead_helmet",
             () -> new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.HELMET, new Item.Properties()));
 
