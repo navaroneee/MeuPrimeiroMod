@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"LIL",
+		"IFI",
+		"LIL"
+	],
+	"key": {
+		"L": { "item": "meuprimeiromod:lead_ingot" },
+		"I": { "item": "minecraft:iron_ingot" },
+		"F": { "item": "minecraft:furnace" }
+	},
+	"result": {
+		"item": "meuprimeiromod:cesium_refiner"
+	}
+}

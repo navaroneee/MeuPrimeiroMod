@@ -14,6 +14,7 @@ Cada **episódio (EP)** corresponde a uma funcionalidade específica do mod. A i
 | 02 | Propriedades de Blocks + Sistema de Minério | Concluído |
 | 03 | Armadura de Chumbo (Lead Armor) | Concluído |
 | 04 | Cesium 137: Radiação, Geiger Counter e Armadura Custom | Concluído |
+| 05 | Refinador de Césio, Granada e Bomba Nuclear | Concluído |
 
 ## Fluxo de Trabalho
 

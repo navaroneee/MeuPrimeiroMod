@@ -28,7 +28,7 @@ public class CesiumGranadeItem extends Item {
         if (!level.isClientSide()) {
             CesiumGranadeEntity grenade = new CesiumGranadeEntity(level, player);
             grenade.setItem(stack);
-            // Trajetória similar a uma bola de neve
+            // bola de neve (vanila)
             grenade.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.2F, 1.0F);
             level.addFreshEntity(grenade);
         }

@@ -1,79 +1,51 @@
 package com.navaronee.meuprimeiromod.client.sound;
 
-import com.navaronee.meuprimeiromod.MeuPrimeiroMod;
 import com.navaronee.meuprimeiromod.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.level.ChunkEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-@Mod.EventBusSubscriber(modid = MeuPrimeiroMod.MODID, value = Dist.CLIENT)
+/**
+ * Tracker client-side usado pelo Geiger Counter.
+ * Faz scan direto num raio de 15 blocos ao redor do player.
+ * PERFORMANCE: scan cacheado por 5 ticks (não roda todo tick).
+ */
 public class ClientCesiumTracker {
 
-    private static final Map<ChunkPos, List<BlockPos>> CESIUM_CACHE = new ConcurrentHashMap<>();
+    private static final int SCAN_RADIUS = 15;
+    private static final int CACHE_TICKS = 5;
 
-    @SubscribeEvent
-    public static void onChunkLoad(ChunkEvent.Load event) {
-        if (!(event.getChunk() instanceof LevelChunk chunk)) return;
+    private static long lastScanTick = -1000;
+    private static double cachedDistance = Double.MAX_VALUE;
 
-        Level level = (Level) event.getLevel();
-        if (!level.isClientSide()) return;
+    public static double findNearestCesiumDistance(Player player) {
+        Level level = player.level();
+        long now = level.getGameTime();
 
-        ChunkPos chunkPos = chunk.getPos();
-        List<BlockPos> positions = new ArrayList<>();
+        // Retorna cached se ainda recente
+        if (now - lastScanTick < CACHE_TICKS) {
+            return cachedDistance;
+        }
 
-        int minX = chunkPos.getMinBlockX();
-        int minZ = chunkPos.getMinBlockZ();
-        int minY = level.getMinBuildHeight();
-        int maxY = level.getMaxBuildHeight();
+        BlockPos playerPos = player.blockPosition();
+        double closest = Double.MAX_VALUE;
 
-        for (int x = minX; x < minX + 16; x++) {
-            for (int z = minZ; z < minZ + 16; z++) {
-                for (int y = minY; y < maxY; y++) {
-                    BlockPos pos = new BlockPos(x, y, z);
-                    if (chunk.getBlockState(pos).is(ModBlocks.CESIUM_ORE.get())) {
-                        positions.add(pos.immutable());
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for (int dx = -SCAN_RADIUS; dx <= SCAN_RADIUS; dx++) {
+            for (int dz = -SCAN_RADIUS; dz <= SCAN_RADIUS; dz++) {
+                for (int dy = -SCAN_RADIUS; dy <= SCAN_RADIUS; dy++) {
+                    mutable.set(playerPos.getX() + dx, playerPos.getY() + dy, playerPos.getZ() + dz);
+                    if (level.getBlockState(mutable).is(ModBlocks.CESIUM_ORE.get())) {
+                        double dist = Math.sqrt(mutable.distSqr(playerPos));
+                        if (dist < closest) closest = dist;
                     }
                 }
             }
         }
 
-        if (!positions.isEmpty()) {
-            CESIUM_CACHE.put(chunkPos, positions);
-        } else {
-            CESIUM_CACHE.remove(chunkPos);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onChunkUnload(ChunkEvent.Unload event) {
-        if (!event.getLevel().isClientSide()) return;
-        CESIUM_CACHE.remove(event.getChunk().getPos());
-    }
-
-    public static double findNearestCesiumDistance(Player player) {
-        BlockPos playerPos = player.blockPosition();
-        double closestDist = Double.MAX_VALUE;
-
-        for (List<BlockPos> positions : CESIUM_CACHE.values()) {
-            for (BlockPos pos : positions) {
-                double dist = Math.sqrt(pos.distSqr(playerPos));
-                if (dist < closestDist) {
-                    closestDist = dist;
-                }
-            }
-        }
-        return closestDist;
+        cachedDistance = closest;
+        lastScanTick = now;
+        return closest;
     }
 
     public static int getDistanceLevel(Player player) {

@@ -17,12 +17,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class CesiumNukePrimedEntity extends PrimedTnt {
 
-    public static final float EXPLOSION_POWER = 30.0F;     // cratera central
-    public static final float SECONDARY_POWER = 18.0F;     // cratera irregular
-    public static final double RADIATION_RADIUS = 55.0;    // zona massiva
-    public static final double BURN_RADIUS = 70.0;         // raio do fogo azul
-    public static final int RADIATION_DURATION_TICKS = 4800; // 4 minutos
-    public static final int BURN_DURATION_TICKS = 800;     // 40s fogo nos bichos
+    public static final float EXPLOSION_POWER = 45.0F;     // cratera 1.5x maior
+    public static final float SECONDARY_POWER = 27.0F;     // secundárias 1.5x
+    public static final double RADIATION_RADIUS = 82.0;    // zona 1.5x
+    public static final double BURN_RADIUS = 105.0;        // raio 1.5x
+    public static final int RADIATION_DURATION_TICKS = 4800; // 4 minutos (mantido)
+    public static final int BURN_DURATION_TICKS = 800;     // 40s fogo (mantido)
 
     /**
      * Fuse sincronizado com o áudio do siren:
