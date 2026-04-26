@@ -1,0 +1,24 @@
+{
+	"parent": "meuprimeiromod:item/lead_shield",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 90, 0],
+			"translation": [11, 6, -2],
+			"scale": [1, 1, 1]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 90, 0],
+			"translation": [3.51, 6.91, -0.51]
+		},
+		"firstperson_righthand": {
+			"rotation": [45, 135, 0],
+			"translation": [-4.5, 5.0, -8.0],
+			"scale": [1.25, 1.25, 1.25]
+		},
+		"firstperson_lefthand": {
+			"rotation": [45, 135, 0],
+			"translation": [5.0, 5.0, -8.0],
+			"scale": [1.25, 1.25, 1.25]
+		}
+	}
+}

@@ -49,6 +49,15 @@ public class ModBlocks {
     public static final RegistryObject<Block> CESIUM_NUKE = registerBlock("cesium_nuke",
             () -> new CesiumNukeBlock(BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.TNT)));
 
+    // Sem BlockItem auto — placado pelo item cesium_dust via useOn
+    public static final RegistryObject<Block> CESIUM_DUST_BLOCK = BLOCKS.register("cesium_dust_block",
+            () -> new CesiumDustBlock(BlockBehaviour.Properties.of()
+                    .strength(0.1f)
+                    .sound(SoundType.SAND)
+                    .noCollission()
+                    .noOcclusion()
+                    .lightLevel(state -> 10)));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);

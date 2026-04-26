@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"LLL",
+		"LWL",
+		" L "
+	],
+	"key": {
+		"L": { "item": "meuprimeiromod:lead_ingot" },
+		"W": { "tag": "minecraft:planks" }
+	},
+	"result": {
+		"item": "meuprimeiromod:lead_shield"
+	}
+}

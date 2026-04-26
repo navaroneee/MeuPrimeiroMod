@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{ "item": "minecraft:slime_ball" },
+		{ "item": "meuprimeiromod:cesium_fragment" }
+	],
+	"result": {
+		"item": "meuprimeiromod:ammo_slime",
+		"count": 2
+	}
+}

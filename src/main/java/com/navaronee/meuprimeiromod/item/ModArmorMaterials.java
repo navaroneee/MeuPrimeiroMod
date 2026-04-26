@@ -11,8 +11,8 @@ import java.util.function.Supplier;
 
 public enum ModArmorMaterials implements ArmorMaterial {
 
-    LEAD("lead", 20, new int[]{2, 5, 6, 2}, 9, SoundEvents.ARMOR_EQUIP_IRON,
-            1.0f, 0.05f, () -> Ingredient.of(ModItems.LEAD_INGOT.get()));
+    LEAD("lead", 35, new int[]{3, 6, 8, 3}, 12, SoundEvents.ARMOR_EQUIP_IRON,
+            2.5f, 0.07f, () -> Ingredient.of(ModItems.LEAD_INGOT.get()));
 
     private final String name;
     private final int durabilityMultiplier;

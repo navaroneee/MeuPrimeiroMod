@@ -30,5 +30,7 @@ jdk17/
 
 # Files from Forge MDK
 forge*changelog.txt
+
+# Roteiros e MDs de produção (uso pessoal pra videos, fora do código)
 ROTEIRO*.txt
-ROTEIRO*.txt
+ROTEIRO*.md

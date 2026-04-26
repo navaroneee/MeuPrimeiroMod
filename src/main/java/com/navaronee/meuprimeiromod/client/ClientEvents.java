@@ -4,6 +4,15 @@ import com.navaronee.meuprimeiromod.MeuPrimeiroMod;
 import com.navaronee.meuprimeiromod.client.entity.AtomicCloudRenderer;
 import com.navaronee.meuprimeiromod.client.entity.CesiumGranadeRenderer;
 import com.navaronee.meuprimeiromod.client.entity.CesiumNukePrimedRenderer;
+import com.navaronee.meuprimeiromod.client.entity.MutantRenderer;
+import com.navaronee.meuprimeiromod.client.entity.MutantTntProjectileRenderer;
+import com.navaronee.meuprimeiromod.client.entity.RadioactiveBeeRenderer;
+import com.navaronee.meuprimeiromod.client.entity.RadioactiveSlimeRenderer;
+import com.navaronee.meuprimeiromod.client.entity.SlimeShotRenderer;
+import com.navaronee.meuprimeiromod.client.model.MutantModel;
+import com.navaronee.meuprimeiromod.block.ModBlocks;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import com.navaronee.meuprimeiromod.client.particle.CesiumAtomCoreParticle;
 import com.navaronee.meuprimeiromod.client.particle.CesiumAtomFogParticle;
 import com.navaronee.meuprimeiromod.client.particle.CesiumAtomRingParticle;
@@ -29,12 +38,15 @@ public class ClientEvents {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(LeadArmorModel.LAYER_LOCATION, LeadArmorModel::createBodyLayer);
+        event.registerLayerDefinition(MutantModel.LAYER_LOCATION, MutantModel::createBodyLayer);
     }
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(ModMenuTypes.CESIUM_REFINER.get(), CesiumRefinerScreen::new);
+            // Cesium dust block: cutout pra textura com transparência
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CESIUM_DUST_BLOCK.get(), RenderType.cutout());
         });
     }
 
@@ -43,6 +55,11 @@ public class ClientEvents {
         event.registerEntityRenderer(ModEntities.CESIUM_GRANADE.get(), CesiumGranadeRenderer::new);
         event.registerEntityRenderer(ModEntities.CESIUM_NUKE_PRIMED.get(), CesiumNukePrimedRenderer::new);
         event.registerEntityRenderer(ModEntities.ATOMIC_CLOUD.get(), AtomicCloudRenderer::new);
+        event.registerEntityRenderer(ModEntities.RADIOACTIVE_BEE.get(), RadioactiveBeeRenderer::new);
+        event.registerEntityRenderer(ModEntities.RADIOACTIVE_SLIME.get(), RadioactiveSlimeRenderer::new);
+        event.registerEntityRenderer(ModEntities.MUTANT.get(), MutantRenderer::new);
+        event.registerEntityRenderer(ModEntities.MUTANT_TNT_PROJECTILE.get(), MutantTntProjectileRenderer::new);
+        event.registerEntityRenderer(ModEntities.SLIME_SHOT.get(), SlimeShotRenderer::new);
     }
 
     @SubscribeEvent

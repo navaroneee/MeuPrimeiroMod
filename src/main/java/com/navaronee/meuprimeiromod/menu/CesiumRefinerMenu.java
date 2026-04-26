@@ -23,7 +23,7 @@ public class CesiumRefinerMenu extends AbstractContainerMenu {
     public CesiumRefinerMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv,
                 inv.player.level().getBlockEntity(extraData.readBlockPos()),
-                new SimpleContainerData(2));
+                new SimpleContainerData(4));
     }
 
     public CesiumRefinerMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -56,6 +56,14 @@ public class CesiumRefinerMenu extends AbstractContainerMenu {
         int max = data.get(1);
         int arrowSize = 24;
         return max != 0 && progress != 0 ? progress * arrowSize / max : 0;
+    }
+
+    public int getEnergy() {
+        return data.get(2);
+    }
+
+    public int getEnergyCapacity() {
+        return data.get(3);
     }
 
     // Slot IDs:

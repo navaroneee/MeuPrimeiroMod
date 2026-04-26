@@ -163,6 +163,12 @@ tasks.named('processResources', ProcessResources).configure {
     filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
         expand replaceProperties + [project: project]
     }
+
+    // Não empacotar arquivos de autoria do BlockBench/exports — não são usados em runtime
+    exclude '**/*.bbmodel'
+    exclude 'assets/**/models/entity/**/*.java'
+    exclude 'assets/**/models/armour/**/*.java'
+    exclude 'assets/**/models/armor/**/*.java'
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

@@ -2,6 +2,7 @@ package com.navaronee.meuprimeiromod.event;
 
 import com.navaronee.meuprimeiromod.MeuPrimeiroMod;
 import com.navaronee.meuprimeiromod.effect.ModEffects;
+import com.navaronee.meuprimeiromod.entity.RadioactiveTargets;
 import com.navaronee.meuprimeiromod.item.ModItems;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -36,6 +37,9 @@ public class RadiationEvents {
 
         // PERFORMANCE: server-side only.
         if (entity.level().isClientSide()) return;
+
+        // Criaturas de césio (Mutant/Bee/Slime radioativos) são imunes — feitas de radiação.
+        if (RadioactiveTargets.isCesiumImmune(entity)) return;
 
         // Armadura de chumbo full: imune + slowness (aplica só em Player porque slowness em mob virou sem sentido)
         if (hasFullLeadArmor(entity)) {

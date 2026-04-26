@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,11 @@ public class CesiumRefinerBlockEntity extends BlockEntity implements MenuProvide
     public static final int SLOT_INPUT = 0;
     public static final int SLOT_OUTPUT = 1;
     public static final int PROCESS_TIME = 200; // 10 segundos
+
+    // Energia: 60.000 FE buffer, recebe até 200 FE/tick (cabos), gasta 50 FE/tick processando
+    public static final int ENERGY_CAPACITY = 60_000;
+    public static final int ENERGY_RECEIVE = 200;
+    public static final int ENERGY_PER_TICK = 50;
 
     private final ItemStackHandler items = new ItemStackHandler(2) {
         @Override
@@ -47,8 +53,13 @@ public class CesiumRefinerBlockEntity extends BlockEntity implements MenuProvide
 
     private LazyOptional<IItemHandler> itemHandler = LazyOptional.of(() -> items);
 
+    private final ModEnergyStorage energy = new ModEnergyStorage(
+            ENERGY_CAPACITY, ENERGY_RECEIVE, this::setChanged);
+    private LazyOptional<IEnergyStorage> energyHandler = LazyOptional.of(() -> energy);
+
     private int progress = 0;
     private int lastSyncedProgress = -1;
+    private int lastSyncedEnergy = -1;
 
     protected final ContainerData data = new ContainerData() {
         @Override
@@ -56,18 +67,23 @@ public class CesiumRefinerBlockEntity extends BlockEntity implements MenuProvide
             return switch (index) {
                 case 0 -> progress;
                 case 1 -> PROCESS_TIME;
+                case 2 -> energy.getEnergyStored();
+                case 3 -> energy.getMaxEnergyStored();
                 default -> 0;
             };
         }
 
         @Override
         public void set(int index, int value) {
-            if (index == 0) progress = value;
+            switch (index) {
+                case 0 -> progress = value;
+                case 2 -> energy.setEnergyDirect(value);
+            }
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 4;
         }
     };
 
@@ -106,6 +122,10 @@ public class CesiumRefinerBlockEntity extends BlockEntity implements MenuProvide
             if (!ItemStack.isSameItemSameTags(output, result)) return;
             if (output.getCount() + result.getCount() > output.getMaxStackSize()) return;
         }
+
+        // Sem energia? Não progride
+        if (energy.getEnergyStored() < ENERGY_PER_TICK) return;
+        energy.useEnergy(ENERGY_PER_TICK);
 
         progress++;
 
@@ -157,6 +177,9 @@ public class CesiumRefinerBlockEntity extends BlockEntity implements MenuProvide
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return itemHandler.cast();
         }
+        if (cap == ForgeCapabilities.ENERGY) {
+            return energyHandler.cast();
+        }
         return super.getCapability(cap, side);
     }
 
@@ -164,12 +187,14 @@ public class CesiumRefinerBlockEntity extends BlockEntity implements MenuProvide
     public void invalidateCaps() {
         super.invalidateCaps();
         itemHandler.invalidate();
+        energyHandler.invalidate();
     }
 
     @Override
     public void reviveCaps() {
         super.reviveCaps();
         itemHandler = LazyOptional.of(() -> items);
+        energyHandler = LazyOptional.of(() -> energy);
     }
 
     @Override
@@ -177,6 +202,7 @@ public class CesiumRefinerBlockEntity extends BlockEntity implements MenuProvide
         super.saveAdditional(tag);
         tag.put("Items", items.serializeNBT());
         tag.putInt("Progress", progress);
+        tag.putInt("Energy", energy.getEnergyStored());
     }
 
     @Override
@@ -184,6 +210,7 @@ public class CesiumRefinerBlockEntity extends BlockEntity implements MenuProvide
         super.load(tag);
         items.deserializeNBT(tag.getCompound("Items"));
         progress = tag.getInt("Progress");
+        energy.setEnergyDirect(tag.getInt("Energy"));
     }
 
     @Override
@@ -191,7 +218,12 @@ public class CesiumRefinerBlockEntity extends BlockEntity implements MenuProvide
         CompoundTag tag = super.getUpdateTag();
         tag.put("Items", items.serializeNBT());
         tag.putInt("Progress", progress);
+        tag.putInt("Energy", energy.getEnergyStored());
         return tag;
+    }
+
+    public ModEnergyStorage getEnergy() {
+        return energy;
     }
 
     @Override

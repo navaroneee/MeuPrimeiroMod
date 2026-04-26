@@ -28,6 +28,10 @@ public class ModCreativeTabs {
                         output.accept(ModItems.LEAD_CHESTPLATE.get());
                         output.accept(ModItems.LEAD_LEGGINGS.get());
                         output.accept(ModItems.LEAD_BOOTS.get());
+                        output.accept(ModItems.LEAD_SHIELD.get());
+                        output.accept(ModItems.CESIUM_FRAGMENT.get());
+                        output.accept(ModItems.AMMO_SLIME.get());
+                        output.accept(ModItems.SLIME_GUN.get());
                         output.accept(ModBlocks.CESIUM_ORE.get());
                         output.accept(ModItems.CESIUM_DUST.get());
                         output.accept(ModItems.GAISER_COUNTER.get());
@@ -35,6 +39,9 @@ public class ModCreativeTabs {
                         output.accept(ModItems.REFINED_CESIUM.get());
                         output.accept(ModItems.CESIUM_GRANADE.get());
                         output.accept(ModBlocks.CESIUM_NUKE.get());
+                        output.accept(ModItems.RADIOACTIVE_BEE_SPAWN_EGG.get());
+                        output.accept(ModItems.RADIOACTIVE_SLIME_SPAWN_EGG.get());
+                        output.accept(ModItems.MUTANT_SPAWN_EGG.get());
                     })
                     .build());
 

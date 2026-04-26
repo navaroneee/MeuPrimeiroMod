@@ -20,12 +20,21 @@ public class CesiumRefinerScreen extends AbstractContainerScreen<CesiumRefinerMe
     private static final int PROGRESS_BAR_WIDTH = 32;
     private static final int PROGRESS_BAR_HEIGHT = 8;
 
-    // Cores da barra (verde radioativo)
+    // Cores da barra de progresso (verde radioativo)
     private static final int BAR_BG_DARK = 0xFF1A1A1A;
     private static final int BAR_BORDER = 0xFF0A0A0A;
     private static final int BAR_FILL_BRIGHT = 0xFF5FFF2D;
     private static final int BAR_FILL_DARK = 0xFF1E7A0F;
     private static final int BAR_HIGHLIGHT = 0xFFB8FF9E;
+
+    // Barra de energia (vertical, canto esquerdo, vermelho→amarelo)
+    private static final int ENERGY_BAR_X = 8;
+    private static final int ENERGY_BAR_Y = 18;
+    private static final int ENERGY_BAR_WIDTH = 12;
+    private static final int ENERGY_BAR_HEIGHT = 50;
+    private static final int ENERGY_FILL_BRIGHT = 0xFFFFE066; // amarelo claro topo
+    private static final int ENERGY_FILL_DARK = 0xFFD4380F;   // vermelho/laranja base
+    private static final int ENERGY_HIGHLIGHT = 0xFFFFFFD0;
 
     public CesiumRefinerScreen(CesiumRefinerMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -53,6 +62,47 @@ public class CesiumRefinerScreen extends AbstractContainerScreen<CesiumRefinerMe
         renderPlayerInventorySlots(gfx, x, y);
 
         renderProgressBar(gfx, x, y);
+        renderEnergyBar(gfx, x, y);
+    }
+
+    private void renderEnergyBar(GuiGraphics gfx, int x, int y) {
+        int bx = x + ENERGY_BAR_X;
+        int by = y + ENERGY_BAR_Y;
+
+        // Borda + background (mesmo estilo da progress bar)
+        gfx.fill(bx - 1, by - 1, bx + ENERGY_BAR_WIDTH + 1, by + ENERGY_BAR_HEIGHT + 1, BAR_BORDER);
+        gfx.fill(bx, by, bx + ENERGY_BAR_WIDTH, by + ENERGY_BAR_HEIGHT, BAR_BG_DARK);
+
+        int e = menu.getEnergy();
+        int cap = menu.getEnergyCapacity();
+        if (cap == 0 || e == 0) return;
+
+        // Vertical: enche de baixo pra cima
+        int filled = e * ENERGY_BAR_HEIGHT / cap;
+        if (filled <= 0) return;
+        int fillTop = by + ENERGY_BAR_HEIGHT - filled;
+
+        // Gradiente vertical: amarelo claro topo → vermelho/laranja base
+        gfx.fillGradient(bx, fillTop, bx + ENERGY_BAR_WIDTH, by + ENERGY_BAR_HEIGHT,
+                ENERGY_FILL_BRIGHT, ENERGY_FILL_DARK);
+
+        // Highlight de 1px no topo da fill
+        gfx.fill(bx, fillTop, bx + ENERGY_BAR_WIDTH, fillTop + 1, ENERGY_HIGHLIGHT);
+    }
+
+    @Override
+    protected void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
+        super.renderLabels(gfx, mouseX, mouseY);
+
+        // Tooltip da barra de energia (mouseX/Y são absolutos; coords aqui são relativas)
+        int relX = mouseX - leftPos;
+        int relY = mouseY - topPos;
+        if (relX >= ENERGY_BAR_X && relX < ENERGY_BAR_X + ENERGY_BAR_WIDTH
+                && relY >= ENERGY_BAR_Y && relY < ENERGY_BAR_Y + ENERGY_BAR_HEIGHT) {
+            gfx.renderTooltip(font,
+                    Component.literal(menu.getEnergy() + " / " + menu.getEnergyCapacity() + " FE"),
+                    relX, relY);
+        }
     }
 
     private void renderProgressBar(GuiGraphics gfx, int x, int y) {

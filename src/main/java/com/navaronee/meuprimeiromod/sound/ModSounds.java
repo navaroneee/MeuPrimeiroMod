@@ -17,6 +17,9 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> COUNTER_LV2 = registerSoundEvent("counter_lv2");
     public static final RegistryObject<SoundEvent> COUNTER_LV3 = registerSoundEvent("counter_lv3");
     public static final RegistryObject<SoundEvent> EXPLOSION_SIREN = registerSoundEvent("explosion_siren");
+    public static final RegistryObject<SoundEvent> MUTANT_MELEE = registerSoundEvent("melee");
+    public static final RegistryObject<SoundEvent> MUTANT_OPEN = registerSoundEvent("open");
+    public static final RegistryObject<SoundEvent> MUTANT_SPIN = registerSoundEvent("spin");
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(

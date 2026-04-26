@@ -32,6 +32,17 @@ public class AtomicCloudEntity extends Entity {
         this.noCulling = true;
     }
 
+    /**
+     * Efeito visual transiente — NÃO persiste no save do mundo.
+     * Se o jogador sair mid-animation, a entity é descartada em vez de
+     * replayar a animação do zero na próxima entrada no mundo.
+     * Mesmo padrão que vanilla usa em LightningBolt.
+     */
+    @Override
+    public boolean shouldBeSaved() {
+        return false;
+    }
+
     @Override
     public void tick() {
         super.tick();
