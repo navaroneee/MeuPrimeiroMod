@@ -1,0 +1,28 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "meuprimeiromod:models/portal_creator",
+		"particle": "meuprimeiromod:block/comom"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [7.28125, 7.25, 7.90625, 7.875], "texture": "#1"},
+				"east": {"uv": [7.28125, 7.25, 7.90625, 7.875], "texture": "#1"},
+				"south": {"uv": [7.28125, 7.25, 7.90625, 7.875], "texture": "#1"},
+				"west": {"uv": [7.28125, 7.25, 7.90625, 7.875], "texture": "#1"},
+				"up": {"uv": [7.28125, 7.25, 7.90625, 7.875], "texture": "#1"},
+				"down": {"uv": [7.28125, 7.25, 7.90625, 7.875], "texture": "#1"}
+			}
+		}
+	],
+	"display": {
+		"gui": {
+			"rotation": [23, 39, 0],
+			"scale": [0.5, 0.5, 0.5]
+		}
+	}
+}

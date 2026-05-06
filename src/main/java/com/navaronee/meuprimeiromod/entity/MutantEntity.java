@@ -49,20 +49,18 @@ public class MutantEntity extends Monster {
 
     // Eventos de animação server → client. Bytes 60-70 colidem com Sniffer/outros no
     // ClientPacketListener (CCE no momento do dispatch), então usamos 100+ que é free.
-    public static final byte EVENT_ATTACK_SIMPLE = 100;
-    public static final byte EVENT_ATTACK_HEAVY_OPEN = 101;
-    public static final byte EVENT_ATTACK_HEAVY_CLOSE = 102;
-    public static final byte EVENT_ATTACK_SPIN = 103;
-    public static final byte EVENT_HIT_STRONG = 104;
+    public static final byte EVENT_MELEE = 100;
+    public static final byte EVENT_HIGH_ATACK = 101;
+    public static final byte EVENT_SPIN = 102;
+    public static final byte EVENT_HARD_HIT = 103;
 
-    // AnimationStates — client-side, disparadas via handleEntityEvent
+    // AnimationStates — client-side, idle e walk são auto-driven (idle sempre, walk
+    // via limbSwing no model). As demais são triggadas via handleEntityEvent.
     public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState walkAnimationState = new AnimationState();
-    public final AnimationState attackSimpleState = new AnimationState();
-    public final AnimationState attack2State = new AnimationState();
-    public final AnimationState attackHeavyOpenState = new AnimationState();
-    public final AnimationState attackHeavyCloseState = new AnimationState();
-    public final AnimationState hitStrongState = new AnimationState();
+    public final AnimationState atackMeleeState = new AnimationState();
+    public final AnimationState spinState = new AnimationState();
+    public final AnimationState highAtackState = new AnimationState();
+    public final AnimationState hardHitState = new AnimationState();
 
     // Cooldowns (ticks) — apenas servidor
     public int heavyAttackCooldown = 100;
@@ -173,10 +171,10 @@ public class MutantEntity extends Monster {
             this.setTarget(null);
             this.setDeltaMovement(0, this.getDeltaMovement().y, 0);
 
-            // Re-broadcast OPEN periodicamente pra os arms ficarem levantados
-            // toda a sequência (auto-stop client é 10s)
-            if (this.deathSequenceTick % 50 == 1) {
-                this.level().broadcastEntityEvent(this, EVENT_ATTACK_HEAVY_OPEN);
+            // Re-broadcast HIGH_ATACK periodicamente pra braços ficarem levantados
+            // (highAtack tem 4.25s, então repete a cada ~4s pra cobrir os 10.5s da seq)
+            if (this.deathSequenceTick % 80 == 1) {
+                this.level().broadcastEntityEvent(this, EVENT_HIGH_ATACK);
             }
 
             if (this.deathSequenceTick == DEATH_SEQ_NUKE_DROP_TICK
@@ -233,33 +231,21 @@ public class MutantEntity extends Monster {
     }
 
     /**
-     * Idle sempre ativo; walk ativa só quando se move.
-     * Os demais AnimationStates são disparados via handleEntityEvent e precisam
-     * ser parados manualmente após o length, senão o último frame fica congelado
-     * sendo aplicado em cima da pose idle/walk.
+     * Idle sempre ativo. Walk é dirigida pelo limbSwing direto no MutantModel
+     * (animateWalk), não precisa de AnimationState aqui. As demais são triggadas
+     * via handleEntityEvent e precisam ser paradas após o length, senão o último
+     * frame fica congelado sendo aplicado em cima do idle.
      */
     private void setupAnimationStates() {
         if (!this.idleAnimationState.isStarted()) {
             this.idleAnimationState.start(this.tickCount);
         }
 
-        boolean isMoving = this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-7D;
-        if (isMoving && !this.walkAnimationState.isStarted()) {
-            this.walkAnimationState.start(this.tickCount);
-        } else if (!isMoving && this.walkAnimationState.isStarted()) {
-            this.walkAnimationState.stop();
-        }
-
-        // Auto-stop: animações que naturalmente voltam a pose idle podem parar no
-        // fim do length. OPEN NÃO auto-para rápido — queremos que o pose final
-        // (braços erguidos) fique congelado até o CLOSE explicitamente parar ele
-        // via handleEntityEvent. Safety net de 10s só pra cobrir caso CLOSE nunca
-        // chegue (entity morreu mid-cast, etc).
-        stopIfExpired(this.attackSimpleState, 1000L);        // atackSimp: 1.0s
-        stopIfExpired(this.attack2State, 2000L);              // atack2: 2.0s
-        stopIfExpired(this.attackHeavyOpenState, 10000L);     // safety net
-        stopIfExpired(this.attackHeavyCloseState, 2000L);     // atack_1_close: 2.0s
-        stopIfExpired(this.hitStrongState, 2209L);            // hitStrong: 2.2083s
+        // Auto-stop após o length de cada anim (em ms)
+        stopIfExpired(this.atackMeleeState, 417L);    // atackMelee: 0.4167s
+        stopIfExpired(this.spinState, 3750L);          // spin: 3.75s
+        stopIfExpired(this.hardHitState, 3000L);       // hardHit: 3.0s
+        stopIfExpired(this.highAtackState, 4250L);     // highAtack: 4.25s
     }
 
     private static void stopIfExpired(AnimationState state, long lengthMs) {
@@ -271,26 +257,21 @@ public class MutantEntity extends Monster {
     @Override
     public void handleEntityEvent(byte id) {
         switch (id) {
-            case EVENT_ATTACK_SIMPLE -> {
+            case EVENT_MELEE -> {
                 stopAllAttackStates();
-                this.attackSimpleState.start(this.tickCount);
+                this.atackMeleeState.start(this.tickCount);
             }
-            case EVENT_ATTACK_HEAVY_OPEN -> {
+            case EVENT_HIGH_ATACK -> {
                 stopAllAttackStates();
-                this.attackHeavyOpenState.start(this.tickCount);
+                this.highAtackState.start(this.tickCount);
             }
-            case EVENT_ATTACK_HEAVY_CLOSE -> {
-                // Para explicitamente a OPEN pra não congelar no último frame
-                this.attackHeavyOpenState.stop();
-                this.attackHeavyCloseState.start(this.tickCount);
-            }
-            case EVENT_ATTACK_SPIN -> {
+            case EVENT_SPIN -> {
                 stopAllAttackStates();
-                this.attack2State.start(this.tickCount);
+                this.spinState.start(this.tickCount);
             }
-            case EVENT_HIT_STRONG -> {
+            case EVENT_HARD_HIT -> {
                 stopAllAttackStates();
-                this.hitStrongState.start(this.tickCount);
+                this.hardHitState.start(this.tickCount);
             }
             default -> super.handleEntityEvent(id);
         }
@@ -301,11 +282,10 @@ public class MutantEntity extends Monster {
      * congelado do último frame de uma animação previa fique somando com a nova.
      */
     private void stopAllAttackStates() {
-        this.attackSimpleState.stop();
-        this.attack2State.stop();
-        this.attackHeavyOpenState.stop();
-        this.attackHeavyCloseState.stop();
-        this.hitStrongState.stop();
+        this.atackMeleeState.stop();
+        this.spinState.stop();
+        this.highAtackState.stop();
+        this.hardHitState.stop();
     }
 
     @Override
@@ -325,7 +305,7 @@ public class MutantEntity extends Monster {
         };
 
         // Broadcast animação de melee antes do dano
-        this.level().broadcastEntityEvent(this, EVENT_ATTACK_SIMPLE);
+        this.level().broadcastEntityEvent(this, EVENT_MELEE);
         this.level().playSound(null, this.blockPosition(),
                 ModSounds.MUTANT_MELEE.get(), SoundSource.HOSTILE, 1.2F, 1.0F);
 
@@ -356,9 +336,8 @@ public class MutantEntity extends Monster {
             this.setHealth(1.0F); // segura na vida pra rodar o show
             this.getNavigation().stop();
             this.setTarget(null);
-            // Levanta os braços (open animation, 3s) — não pisca pra idle/walk porque
-            // em deathSequenceTick > 0 o customServerAiStep trava tudo
-            this.level().broadcastEntityEvent(this, EVENT_ATTACK_HEAVY_OPEN);
+            // Dispara a highAtack — braços erguidos durante toda a sequência
+            this.level().broadcastEntityEvent(this, EVENT_HIGH_ATACK);
             return false;
         }
 
@@ -384,8 +363,8 @@ public class MutantEntity extends Monster {
                 && causing instanceof Player;
 
         if (deflectedTnt || granade || explosionByPlayer) {
-            this.level().broadcastEntityEvent(this, EVENT_HIT_STRONG);
-            this.hitStrongLock = 44; // ~2.2s, duração da animação hitStrong
+            this.level().broadcastEntityEvent(this, EVENT_HARD_HIT);
+            this.hitStrongLock = 60; // ~3s, duração da animação hardHit
 
             // Knockback forte em direção oposta ao atacante
             if (causing != null) {

@@ -62,6 +62,41 @@ public class ModItems {
     public static final RegistryObject<Item> SLIME_GUN = ITEMS.register("slime_gun",
             () -> new SlimeGunItem(new Item.Properties().stacksTo(1).durability(250)));
 
+    // Knight Armor
+    public static final RegistryObject<Item> KNIGHT_HELMET = ITEMS.register("knight_helmet",
+            () -> new KnightArmorItem(ModArmorMaterials.KNIGHT, ArmorItem.Type.HELMET, new Item.Properties()));
+
+    public static final RegistryObject<Item> KNIGHT_CHESTPLATE = ITEMS.register("knight_chestplate",
+            () -> new KnightArmorItem(ModArmorMaterials.KNIGHT, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
+    public static final RegistryObject<Item> KNIGHT_LEGGINGS = ITEMS.register("knight_leggings",
+            () -> new KnightArmorItem(ModArmorMaterials.KNIGHT, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+
+    public static final RegistryObject<Item> KNIGHT_BOOTS = ITEMS.register("knight_boots",
+            () -> new KnightArmorItem(ModArmorMaterials.KNIGHT, ArmorItem.Type.BOOTS, new Item.Properties()));
+
+    // SwordItem signature: (Tier, attackDamageBonus, attackSpeed, Properties)
+    // Damage final = tier.getAttackDamageBonus() + bonus + 1 = 5 + 4 + 1 = 10 (vs 8 netherite)
+    public static final RegistryObject<Item> KNIGHT_SWORD = ITEMS.register("knight_sword",
+            () -> new net.minecraft.world.item.SwordItem(
+                    ModTiers.KNIGHT, 4, -2.4F,
+                    new Item.Properties()));
+
+    // Portal Creator (EP07)
+    public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench",
+            () -> new WrenchItem(new Item.Properties().stacksTo(1).durability(250)));
+
+    public static final RegistryObject<Item> ENDER_PEARL_DUST = ITEMS.register("ender_pearl_dust",
+            () -> new Item(new Item.Properties()) {
+                @Override
+                public boolean isFoil(net.minecraft.world.item.ItemStack stack) {
+                    return true; // brilho radioativo + ender
+                }
+            });
+
+    public static final RegistryObject<Item> SHAPE = ITEMS.register("shape",
+            () -> new ShapeItem(new Item.Properties().stacksTo(1)));
+
     // Spawn eggs
     public static final RegistryObject<Item> RADIOACTIVE_BEE_SPAWN_EGG = ITEMS.register("radioactive_bee_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.RADIOACTIVE_BEE, 0x39FF14, 0xFFD700, new Item.Properties()));

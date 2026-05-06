@@ -1,0 +1,6 @@
+{
+	"variants": {
+		"linked=false": { "model": "meuprimeiromod:block/portal_item_port" },
+		"linked=true":  { "model": "meuprimeiromod:block/multiblock_filler" }
+	}
+}

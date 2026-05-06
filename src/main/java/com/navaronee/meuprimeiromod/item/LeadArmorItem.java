@@ -25,16 +25,32 @@ public class LeadArmorItem extends ArmorItem {
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private LeadArmorModel<?> model;
+            private LeadArmorModel<?> mainModel;
+            private LeadArmorModel<?> leggingsModel;
+            private LeadArmorModel<?> bootsModel;
 
             @Override
             public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack,
                                                                      EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-                if (model == null) {
-                    model = new LeadArmorModel<>(Minecraft.getInstance().getEntityModels()
+                if (equipmentSlot == EquipmentSlot.FEET) {
+                    if (bootsModel == null) {
+                        bootsModel = new LeadArmorModel<>(Minecraft.getInstance().getEntityModels()
+                                .bakeLayer(LeadArmorModel.LAYER_LOCATION_BOOTS));
+                    }
+                    return bootsModel;
+                }
+                if (equipmentSlot == EquipmentSlot.LEGS) {
+                    if (leggingsModel == null) {
+                        leggingsModel = new LeadArmorModel<>(Minecraft.getInstance().getEntityModels()
+                                .bakeLayer(LeadArmorModel.LAYER_LOCATION_LEGGINGS));
+                    }
+                    return leggingsModel;
+                }
+                if (mainModel == null) {
+                    mainModel = new LeadArmorModel<>(Minecraft.getInstance().getEntityModels()
                             .bakeLayer(LeadArmorModel.LAYER_LOCATION));
                 }
-                return model;
+                return mainModel;
             }
         });
     }

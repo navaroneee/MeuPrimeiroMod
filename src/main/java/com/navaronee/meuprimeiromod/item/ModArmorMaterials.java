@@ -12,7 +12,10 @@ import java.util.function.Supplier;
 public enum ModArmorMaterials implements ArmorMaterial {
 
     LEAD("lead", 35, new int[]{3, 6, 8, 3}, 12, SoundEvents.ARMOR_EQUIP_IRON,
-            2.5f, 0.07f, () -> Ingredient.of(ModItems.LEAD_INGOT.get()));
+            2.5f, 0.07f, () -> Ingredient.of(ModItems.LEAD_INGOT.get())),
+
+    KNIGHT("knight", 30, new int[]{3, 6, 7, 3}, 11, SoundEvents.ARMOR_EQUIP_IRON,
+            1.5f, 0.05f, () -> Ingredient.of(net.minecraft.world.item.Items.IRON_INGOT));
 
     private final String name;
     private final int durabilityMultiplier;

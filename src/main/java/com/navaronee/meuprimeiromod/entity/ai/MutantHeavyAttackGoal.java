@@ -17,18 +17,16 @@ import net.minecraft.server.level.ServerLevel;
 import java.util.EnumSet;
 
 /**
- * Heavy attack combo: animação open (3s) → spawn payload aleatório → close (2s).
- * Três variantes selecionadas aleatoriamente no start():
+ * Heavy attack: animação highAtack (4.25s = 85 ticks) com payload disparado
+ * mid-animation. Três variantes aleatórias por fase:
  *   BEES  — 3 abelhas radioativas perseguem o player
- *   SLIMES — 1 slime grande + 4 pequenos perseguem o player
+ *   SLIMES — 1 slime grande + 2 pequenos perseguem o player
  *   TNT   — lança projétil TNT rebatível na direção do player
  */
 public class MutantHeavyAttackGoal extends Goal {
 
-    private static final int OPEN_DURATION = 60;     // 3s
-    private static final int PAYLOAD_TICK = 30;      // meio da open
-    private static final int CLOSE_DURATION = 40;    // 2s
-    private static final int TOTAL_DURATION = OPEN_DURATION + CLOSE_DURATION;
+    private static final int TOTAL_DURATION = 85;    // 4.25s — duração da highAtack
+    private static final int PAYLOAD_TICK = 35;      // ~1.75s, com braços bem erguidos
 
     private enum Variant { BEES, SLIMES, TNT }
 
@@ -36,7 +34,6 @@ public class MutantHeavyAttackGoal extends Goal {
     private int ticks;
     private Variant variant;
     private boolean payloadFired;
-    private boolean closeFired;
 
     public MutantHeavyAttackGoal(MutantEntity mutant) {
         this.mutant = mutant;
@@ -62,11 +59,10 @@ public class MutantHeavyAttackGoal extends Goal {
     public void start() {
         this.ticks = 0;
         this.payloadFired = false;
-        this.closeFired = false;
         this.variant = pickVariantForPhase(mutant.getPhase());
         mutant.getNavigation().stop();
         mutant.isCastingHeavy = true;
-        mutant.level().broadcastEntityEvent(mutant, MutantEntity.EVENT_ATTACK_HEAVY_OPEN);
+        mutant.level().broadcastEntityEvent(mutant, MutantEntity.EVENT_HIGH_ATACK);
         mutant.level().playSound(null, mutant.blockPosition(),
                 ModSounds.MUTANT_OPEN.get(), SoundSource.HOSTILE, 1.4F, 1.0F);
     }
@@ -112,11 +108,6 @@ public class MutantHeavyAttackGoal extends Goal {
         if (!payloadFired && ticks >= PAYLOAD_TICK) {
             payloadFired = true;
             firePayload(target);
-        }
-
-        if (!closeFired && ticks >= OPEN_DURATION) {
-            closeFired = true;
-            mutant.level().broadcastEntityEvent(mutant, MutantEntity.EVENT_ATTACK_HEAVY_CLOSE);
         }
     }
 

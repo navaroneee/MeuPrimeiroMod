@@ -32,5 +32,14 @@ jdk17/
 forge*changelog.txt
 
 # Roteiros e MDs de produção (uso pessoal pra videos, fora do código)
+# README.md é a exceção — fica no repo
 ROTEIRO*.txt
 ROTEIRO*.md
+CHANGELOG*.md
+
+# Pastas locais de trabalho (assets em desenvolvimento, screenshots de bug, etc)
+fail/
+new_content/
+
+# Hotkey/AutoHotkey scripts e snippets locais
+tools/

@@ -1,6 +1,5 @@
 {
 	"format_version": "1.9.0",
-	"credit": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {

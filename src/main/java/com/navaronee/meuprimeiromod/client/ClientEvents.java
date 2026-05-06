@@ -21,7 +21,11 @@ import com.navaronee.meuprimeiromod.client.particle.CesiumLightSmokeParticle;
 import com.navaronee.meuprimeiromod.client.particle.CesiumShockwaveParticle;
 import com.navaronee.meuprimeiromod.particle.ModParticles;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import com.navaronee.meuprimeiromod.client.model.KnightArmorModel;
 import com.navaronee.meuprimeiromod.client.model.LeadArmorModel;
+import com.navaronee.meuprimeiromod.blockentity.ModBlockEntities;
+import com.navaronee.meuprimeiromod.client.render.DimensionalPortalRenderer;
+import com.navaronee.meuprimeiromod.client.render.PortalCreatorRenderer;
 import com.navaronee.meuprimeiromod.entity.ModEntities;
 import com.navaronee.meuprimeiromod.menu.ModMenuTypes;
 import com.navaronee.meuprimeiromod.screen.CesiumRefinerScreen;
@@ -38,6 +42,11 @@ public class ClientEvents {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(LeadArmorModel.LAYER_LOCATION, LeadArmorModel::createBodyLayer);
+        event.registerLayerDefinition(LeadArmorModel.LAYER_LOCATION_LEGGINGS, LeadArmorModel::createLeggingsLayer);
+        event.registerLayerDefinition(LeadArmorModel.LAYER_LOCATION_BOOTS, LeadArmorModel::createBootsLayer);
+        event.registerLayerDefinition(KnightArmorModel.LAYER_LOCATION, KnightArmorModel::createBodyLayer);
+        event.registerLayerDefinition(KnightArmorModel.LAYER_LOCATION_LEGGINGS, KnightArmorModel::createLeggingsLayer);
+        event.registerLayerDefinition(KnightArmorModel.LAYER_LOCATION_BOOTS, KnightArmorModel::createBootsLayer);
         event.registerLayerDefinition(MutantModel.LAYER_LOCATION, MutantModel::createBodyLayer);
     }
 
@@ -45,8 +54,13 @@ public class ClientEvents {
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(ModMenuTypes.CESIUM_REFINER.get(), CesiumRefinerScreen::new);
+            MenuScreens.register(ModMenuTypes.PORTAL_CREATOR.get(),
+                    com.navaronee.meuprimeiromod.screen.PortalCreatorScreen::new);
             // Cesium dust block: cutout pra textura com transparência
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CESIUM_DUST_BLOCK.get(), RenderType.cutout());
+            // Portal Creator: translucent pra que o glass do modelo BlockBench fique
+            // transparente com e sem shaders (sem isso, vanilla renderiza como solid)
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.PORTAL_CREATOR.get(), RenderType.translucent());
         });
     }
 
@@ -60,6 +74,8 @@ public class ClientEvents {
         event.registerEntityRenderer(ModEntities.MUTANT.get(), MutantRenderer::new);
         event.registerEntityRenderer(ModEntities.MUTANT_TNT_PROJECTILE.get(), MutantTntProjectileRenderer::new);
         event.registerEntityRenderer(ModEntities.SLIME_SHOT.get(), SlimeShotRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.PORTAL_CREATOR.get(), PortalCreatorRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.DIMENSIONAL_PORTAL.get(), DimensionalPortalRenderer::new);
     }
 
     @SubscribeEvent

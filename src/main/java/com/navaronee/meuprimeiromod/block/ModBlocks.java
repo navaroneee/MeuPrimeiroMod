@@ -49,6 +49,55 @@ public class ModBlocks {
     public static final RegistryObject<Block> CESIUM_NUKE = registerBlock("cesium_nuke",
             () -> new CesiumNukeBlock(BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.TNT)));
 
+    public static final RegistryObject<Block> PORTAL_CREATOR = registerBlock("portal_creator",
+            () -> new PortalCreatorBlock(BlockBehaviour.Properties.of()
+                    .strength(5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL)
+                    .noOcclusion()
+                    .lightLevel(state -> state.getValue(PortalCreatorBlock.FORMED) ? 12 : 0)));
+
+    public static final RegistryObject<Block> ENGINEERING_FRAME = registerBlock("engineering_frame",
+            () -> new EngineeringFrameBlock(BlockBehaviour.Properties.of()
+                    .strength(5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> PORTAL_ENERGY_PORT = registerBlock("portal_energy_port",
+            () -> new PortalEnergyPortBlock(BlockBehaviour.Properties.of()
+                    .strength(5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> PORTAL_ITEM_PORT = registerBlock("portal_item_port",
+            () -> new PortalItemPortBlock(BlockBehaviour.Properties.of()
+                    .strength(5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> CREATIVE_ENERGY = registerBlock("creative_energy",
+            () -> new CreativeEnergyBlock(BlockBehaviour.Properties.of()
+                    .strength(-1f, 3600000f)
+                    .sound(SoundType.METAL)
+                    .lightLevel(s -> 15)));
+
+    // Filler invisível (não vai pra creative tab — sem BlockItem)
+    public static final RegistryObject<Block> MULTIBLOCK_FILLER = BLOCKS.register("multiblock_filler",
+            () -> new MultiblockFillerBlock(BlockBehaviour.Properties.of()
+                    .strength(5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
+
+    // Portal aberto — só placado pelo controller, não tem BlockItem
+    public static final RegistryObject<Block> DIMENSIONAL_PORTAL = BLOCKS.register("dimensional_portal",
+            () -> new DimensionalPortalBlock(BlockBehaviour.Properties.of()
+                    .strength(-1f, 3600000f)
+                    .noOcclusion()
+                    .noLootTable()
+                    .lightLevel(s -> 12)
+                    .sound(SoundType.GLASS)));
+
     // Sem BlockItem auto — placado pelo item cesium_dust via useOn
     public static final RegistryObject<Block> CESIUM_DUST_BLOCK = BLOCKS.register("cesium_dust_block",
             () -> new CesiumDustBlock(BlockBehaviour.Properties.of()

@@ -1,0 +1,22 @@
+{
+	"variants": {
+		"facing=north,formed=false,ready=false": { "model": "meuprimeiromod:block/portal_creator_unready" },
+		"facing=south,formed=false,ready=false": { "model": "meuprimeiromod:block/portal_creator_unready", "y": 180 },
+		"facing=west,formed=false,ready=false":  { "model": "meuprimeiromod:block/portal_creator_unready", "y": 270 },
+		"facing=east,formed=false,ready=false":  { "model": "meuprimeiromod:block/portal_creator_unready", "y": 90 },
+
+		"facing=north,formed=false,ready=true":  { "model": "meuprimeiromod:block/portal_creator_ready" },
+		"facing=south,formed=false,ready=true":  { "model": "meuprimeiromod:block/portal_creator_ready", "y": 180 },
+		"facing=west,formed=false,ready=true":   { "model": "meuprimeiromod:block/portal_creator_ready", "y": 270 },
+		"facing=east,formed=false,ready=true":   { "model": "meuprimeiromod:block/portal_creator_ready", "y": 90 },
+
+		"facing=north,formed=true,ready=false":  { "model": "meuprimeiromod:block/portal_creator_alterado" },
+		"facing=south,formed=true,ready=false":  { "model": "meuprimeiromod:block/portal_creator_alterado", "y": 180 },
+		"facing=west,formed=true,ready=false":   { "model": "meuprimeiromod:block/portal_creator_alterado", "y": 270 },
+		"facing=east,formed=true,ready=false":   { "model": "meuprimeiromod:block/portal_creator_alterado", "y": 90 },
+		"facing=north,formed=true,ready=true":   { "model": "meuprimeiromod:block/portal_creator_alterado" },
+		"facing=south,formed=true,ready=true":   { "model": "meuprimeiromod:block/portal_creator_alterado", "y": 180 },
+		"facing=west,formed=true,ready=true":    { "model": "meuprimeiromod:block/portal_creator_alterado", "y": 270 },
+		"facing=east,formed=true,ready=true":    { "model": "meuprimeiromod:block/portal_creator_alterado", "y": 90 }
+	}
+}

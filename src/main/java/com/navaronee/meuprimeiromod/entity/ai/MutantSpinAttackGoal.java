@@ -14,13 +14,13 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 
 /**
- * Spin charge (atack2): Mutant rodopia 2s e carrega na direção do player.
- * Ao encostar (distância < 2.5), causa dano + knockback forte e encerra.
- * Ativado aleatoriamente em média distância (4-10 blocos) com cooldown longo.
+ * Spin charge: Mutant rodopia 3.75s e carrega na direção do player.
+ * Ao encostar (distância < 2.5), causa dano + knockback forte (uma vez).
+ * Ativado aleatoriamente, chance/cooldown variando por fase.
  */
 public class MutantSpinAttackGoal extends Goal {
 
-    private static final int DURATION = 40;          // 2s = mesma duração da animação
+    private static final int DURATION = 75;          // 3.75s = duração da spin
     private static final double CHARGE_SPEED = 0.55;
 
     private final MutantEntity mutant;
@@ -82,7 +82,7 @@ public class MutantSpinAttackGoal extends Goal {
         this.ticks = 0;
         this.hitDelivered = false;
         mutant.getNavigation().stop();
-        mutant.level().broadcastEntityEvent(mutant, MutantEntity.EVENT_ATTACK_SPIN);
+        mutant.level().broadcastEntityEvent(mutant, MutantEntity.EVENT_SPIN);
         mutant.level().playSound(null, mutant.blockPosition(),
                 ModSounds.MUTANT_SPIN.get(), SoundSource.HOSTILE, 1.4F, 1.0F);
     }

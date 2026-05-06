@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{ "item": "minecraft:ender_pearl" },
+		{ "item": "meuprimeiromod:cesium_dust" }
+	],
+	"result": {
+		"item": "meuprimeiromod:ender_pearl_dust",
+		"count": 4
+	}
+}

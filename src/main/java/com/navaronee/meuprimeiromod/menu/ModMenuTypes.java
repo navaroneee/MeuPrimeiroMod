@@ -17,6 +17,10 @@ public class ModMenuTypes {
             MENUS.register("cesium_refiner",
                     () -> IForgeMenuType.create(CesiumRefinerMenu::new));
 
+    public static final RegistryObject<MenuType<PortalCreatorMenu>> PORTAL_CREATOR =
+            MENUS.register("portal_creator",
+                    () -> IForgeMenuType.create(PortalCreatorMenu::new));
+
     public static void register(IEventBus eventBus) {
         MENUS.register(eventBus);
     }

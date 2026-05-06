@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Slime Gun — bazooka. Comportamento estilo MrCrayfish Gun Mod:
+ * Slime Gun — bazooka:
  *  - Click direito = dispara imediato (sem charge/hold)
  *  - Consome 1 ammo_slime do inventário
  *  - Cooldown de 4s atua como "reload" — overlay escuro do vanilla mostra o tempo
